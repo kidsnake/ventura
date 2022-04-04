@@ -12,11 +12,25 @@ const Home: NextPage = () => {
     const fetchData = async () => {
       const { data } = await axios.get('/api/hello')
 
+      console.log(data)
+
       return data;
     }
 
     fetchData()
   }, [])
+
+  const handleSubmit = async () => {
+    const counterData = {
+      counter: counter,
+      name: 'fetching'
+    }
+
+    const { data } = await axios.post('/api/hello', counterData)
+
+    console.log(data)
+
+  }
 
   return (
     <div className={styles.container}>
@@ -30,6 +44,8 @@ const Home: NextPage = () => {
         <h1 className={styles.title} onClick={() => setCounter(counter + 1)}>
           {counter}
         </h1>
+
+        <button onClick={handleSubmit}>Submit count</button>
 
         <p className={styles.description}>
           Get started by editing{' '}
