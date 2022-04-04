@@ -1,36 +1,37 @@
-import axios from 'axios'
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import { useEffect, useState } from 'react'
-import styles from '../styles/Home.module.scss'
+import axios from "axios";
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import styles from "../styles/Home.module.scss";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const Home: NextPage = () => {
-  const [counter, setCounter] = useState(0)
+  const [counter, setCounter] = useState(0);
+  const { data: session } = useSession();
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get('/api/hello')
+      const { data } = await axios.get("/api/hello");
 
-      console.log(data)
+      console.log(data);
 
       return data;
-    }
+    };
 
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   const handleSubmit = async () => {
     const counterData = {
       counter: counter,
-      name: 'fetching'
-    }
+      name: "fetching",
+    };
 
-    const { data } = await axios.post('/api/hello', counterData)
+    const { data } = await axios.post("/api/hello", counterData);
 
-    console.log(data)
-
-  }
+    console.log(data);
+  };
 
   return (
     <div className={styles.container}>
@@ -47,8 +48,17 @@ const Home: NextPage = () => {
 
         <button onClick={handleSubmit}>Submit count</button>
 
+        {session ? (
+          <>
+            <span>{session.user?.email}</span>
+            <button onClick={() => signOut()}>sign out</button>
+          </>
+        ) : (
+          <button onClick={() => signIn()}>sign in</button>
+        )}
+
         <p className={styles.description}>
-          Get started by editing{' '}
+          Get started by editing{" "}
           <code className={styles.code}>pages/index.tsx</code>
         </p>
 
@@ -89,14 +99,14 @@ const Home: NextPage = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
