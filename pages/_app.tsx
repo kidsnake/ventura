@@ -1,7 +1,7 @@
-import { SessionProvider } from "next-auth/react";
-import type { AppProps } from "next/app";
+import { SessionProvider } from 'next-auth/react';
+import type { AppProps } from 'next/app';
 
-import "../styles/globals.scss";
+import '../styles/globals.scss';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
