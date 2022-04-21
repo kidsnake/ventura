@@ -7,6 +7,7 @@ const Home: NextPage<{ user: User }> = ({ user }) => {
     <div>
       <p>ime {user.name}</p>
       <p>email {user.email}</p>
+      <p> iz baze podataka smo izvukle ime i mail ulogiranog korisnika</p>
     </div>
   );
 };
