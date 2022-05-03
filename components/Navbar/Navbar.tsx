@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -14,6 +14,23 @@ import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import Avatar from '@mui/material/Avatar';
+import { useSession } from 'next-auth/react';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import ListItemText from '@mui/material/ListItemText';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import InfoIcon from '@mui/icons-material/Info';
+import HandshakeIcon from '@mui/icons-material/Handshake';
+import { useRouter } from 'next/router';
+import PsychologyIcon from '@mui/icons-material/Psychology';
+import MapIcon from '@mui/icons-material/Map';
+import CreditScoreIcon from '@mui/icons-material/CreditScore';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -56,8 +73,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Navbar = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [showDrawer, setShowDrawer] = useState(false);
+
+  const router = useRouter();
+
+  const { data: session, status } = useSession();
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -79,6 +101,10 @@ const Navbar = () => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const toggleDrawer = () => {
+    setShowDrawer(!showDrawer);
+  };
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -96,8 +122,7 @@ const Navbar = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Moj profil</MenuItem>
     </Menu>
   );
 
@@ -134,7 +159,7 @@ const Navbar = () => {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+          {session ? <Avatar>{session.user?.name?.toUpperCase()}</Avatar> : <AccountCircle />}
         </IconButton>
         <p>Profile</p>
       </MenuItem>
@@ -145,22 +170,42 @@ const Navbar = () => {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
+          <IconButton onClick={toggleDrawer}>
             <MenuIcon />
           </IconButton>
+          <SwipeableDrawer
+            anchor="left"
+            open={showDrawer}
+            onClose={toggleDrawer}
+            onOpen={toggleDrawer}
+          >
+            <Box role="presentation" onClick={toggleDrawer} onKeyDown={toggleDrawer}>
+              <List>
+                {navMap.top.map(({ name, link, icon }) => (
+                  <ListItem button key={name} onClick={() => router.push(link)}>
+                    <ListItemIcon>{icon}</ListItemIcon>
+                    <ListItemText primary={name} />
+                  </ListItem>
+                ))}
+              </List>
+              <Divider />
+              <List>
+                {navMap.bottom.map(({ name, link, icon }) => (
+                  <ListItem button key={name} onClick={() => router.push(link)}>
+                    <ListItemIcon>{icon}</ListItemIcon>
+                    <ListItemText primary={name} />
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+          </SwipeableDrawer>
           <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            MUI
+            Ventura
           </Typography>
           <Search>
             <SearchIconWrapper>
@@ -184,7 +229,7 @@ const Navbar = () => {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+              {session ? <Avatar>{session.user?.name?.toUpperCase()}</Avatar> : <AccountCircle />}
             </IconButton>
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
@@ -205,6 +250,38 @@ const Navbar = () => {
       {renderMenu}
     </Box>
   );
-}
+};
 
 export default Navbar;
+
+const navMap = {
+  top: [
+    {
+      name: 'Kvizovi',
+      link: '/quiz',
+      icon: <PsychologyIcon />,
+    },
+    {
+      name: 'Karta',
+      link: '/map',
+      icon: <MapIcon />,
+    },
+    {
+      name: 'Kuponi',
+      link: '/coupons',
+      icon: <CreditScoreIcon />,
+    },
+  ],
+  bottom: [
+    {
+      name: 'O nama',
+      link: '/about',
+      icon: <InfoIcon />,
+    },
+    {
+      name: 'Partneri',
+      link: '/partners',
+      icon: <HandshakeIcon />,
+    },
+  ],
+};
