@@ -6,6 +6,7 @@ import styles from '@/styles/Home.module.scss';
 import { useSession, signIn, signOut } from 'next-auth/react';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
+import TitlebarImageList from '@/components/TitlebarImageList/TitlebarImageList';
 
 
 const Home: NextPage = () => {
@@ -60,6 +61,8 @@ const Home: NextPage = () => {
         ) : (
           <button onClick={() => signIn()}>sign in</button>
         )}
+      <TitlebarImageList/>
+        
       </main>
     </Container>
   );
