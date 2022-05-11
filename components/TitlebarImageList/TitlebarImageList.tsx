@@ -18,7 +18,7 @@ export default function TitlebarImageList() {
         <ListSubheader component="div">Dostupni Kvizovi</ListSubheader>
       </ImageListItem>
       {itemData.map((item) => (
-        <ImageListItem key={item.img} onClick={() => router.push(item.link)}>
+        <ImageListItem key={item.img} onClick={() => router.push(`quiz/${item.title}`)}>
           <img
             src={`${item.img}?w=248&fit=crop&auto=format`}
             srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
