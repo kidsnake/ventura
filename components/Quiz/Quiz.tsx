@@ -4,6 +4,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import { QuizData, QuizAll } from '@/mock data/mockdata';
 
 
 export default function Quiz() {
@@ -31,19 +32,3 @@ export default function Quiz() {
             
 </FormControl>)}
 
-const QuizData = [
-    {
-        question_id: '1',
-        question: 'Is Zagreb in Croatia?',
-        points: '5',
-        ans_corr: 'Yes',
-        answers: ['Yes', 'No'],
-    }, 
-    {
-        question_id: '2',
-        question: 'How many citizens does Zagreb have?',
-        points: '5',
-        ans_corr: '1 million',
-        answers: ['500 thousands', '1 million', '2 million'],
-    }
-]
