@@ -1,3 +1,6 @@
+import { faker } from '@faker-js/faker';
+import { useState, useEffect } from 'react';
+
 export const itemData = [
     {
       img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
@@ -84,7 +87,7 @@ export const itemData = [
     },
   ];
 
- export const QuizData = [
+ /*export const QuizData = [
     {
         question_id: '1',
         question: 'Is Zagreb in Croatia?',
@@ -110,3 +113,63 @@ export const QuizAll = [
         elements: QuizData,
     }
 ]
+/*export const answer = {
+  value: 'odgovor1',
+  correct: true
+}
+
+export const question = {
+      question_id : '',
+      question_title : '?',
+      points : 1,
+      answers : [answer, answer, answer],
+}
+
+export const quiz = {
+    name : 'ime kviza',
+    id : 'broj',
+    max_points : 1,
+    questions : [question, question, question]
+}
+
+export const All_quizzes = {
+  quizzes : [quiz, quiz, quiz]
+}
+
+*/
+const generateQuestions = (count: number) => {
+  const arr = Array.from(Array(count).keys());
+
+  return arr.map((_, idx) => ({
+    id: `${idx}-question`,
+    text: `Question ${idx + 1}`,
+    description: faker.lorem.sentence(),
+    answers: [{
+      id: `${idx}-answer`,
+      value: faker.lorem.sentence(),
+      correct: idx % 2 === 0,
+    },
+    {
+      id: `${idx}-answer`,
+      value: faker.lorem.sentence(),
+      correct: idx % 2 === 0,
+    }]
+  }))
+}
+
+export const generateQuiz = (count: number, questionCount: number) => {
+  const arr = Array.from(Array(count).keys());
+
+  return arr.map((_, idx) => ({
+    id: `${idx}-quiz`,
+    title: faker.address.cityName(),
+    image: faker.image.city(),
+    description: faker.lorem.sentence(),
+    questions: generateQuestions(idx + 1)
+  }))
+}
+
+interface IAnswer {id: string, value: string, correct: boolean}
+export interface IQuestion {id: string, text: string, description: string, answers: IAnswer[] }
+export interface IQuiz {id: string, title: string, image: string, description: string, questions: IQuestion[] }
+

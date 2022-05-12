@@ -4,31 +4,28 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import { QuizData, QuizAll } from '@/mock data/mockdata';
+import {IQuestion } from '@/mockdata/mockdata';
 
-
-export default function Quiz() {
+interface Props { question: IQuestion}
+export default function Quiz({question}: Props) {
     return (
-        
         <FormControl>
-            {QuizData.map((item) => (
                 <div>
-                    <FormLabel key={item.question_id}>{item.question}</FormLabel>
+                    <FormLabel key={question.id}>{question.text}</FormLabel>
                     <RadioGroup
                         aria-labelledby="demo-radio-buttons-group-label"
                         //defaultValue={item.answers[0]}
                         name="radio-buttons-group"
                     >
-                    {item.answers.map((ans) => (
-                        <div>
-                        <FormControlLabel value={ans} control={<Radio />} label={ans} />
-                        </div>
+                    {question.answers.map((answer) => (
+                        
+                        <FormControlLabel key={answer.id} value={answer.value} control={<Radio />} label={answer.value} />
                         
                     ))}
                     </RadioGroup>
                     
                 </div>    
-            ))}
+            
             
 </FormControl>)}
 

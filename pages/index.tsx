@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { NextPage } from 'next';
+import type { GetServerSidePropsContext, NextPage } from 'next';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import styles from '@/styles/Home.module.scss';
@@ -7,9 +7,10 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import TitlebarImageList from '@/components/TitlebarImageList/TitlebarImageList';
+import { generateQuiz, IQuiz } from '@/mockdata/mockdata';
 
-
-const Home: NextPage = () => {
+interface Props { quizzes: IQuiz[] }
+const Home: NextPage<Props> = ({quizzes}) => {
   const [counter, setCounter] = useState(0);
   const { data: session } = useSession();
 
@@ -69,3 +70,14 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+
+export const getServerSideProps = () => {
+  const quizzes = generateQuiz(5, 20);
+
+  return {
+    props: {
+      quizzes,
+    }
+  }
+}

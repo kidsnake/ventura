@@ -5,30 +5,29 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 import ListSubheader from '@mui/material/ListSubheader';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
-import router, { useRouter } from 'next/router';
+import router from 'next/router';
+import { generateQuiz } from '@/mockdata/mockdata';
 //import link from 'next/link';
-import Button from '@mui/material/Button';
-import ButtonBase from '@mui/material/ButtonBase';
-import { itemData } from '@/mock data/mockdata';
 
 
 export default function TitlebarImageList() {
+  const quizzes = generateQuiz(5, 20);
   return (
     <ImageList sx={{ width: 1000, height: 450 }}>
       <ImageListItem key="Subheader" cols={4}>
         <ListSubheader component="div">Dostupni Kvizovi</ListSubheader>
       </ImageListItem>
-      {itemData.map((item) => (
-        <ImageListItem key={item.img} onClick={() => router.push(`quiz/${item.title}`)}>
+      {quizzes.map((item) => (
+        <ImageListItem key={item.image} onClick={() => router.push(`/quiz/${item.id}`)}>
           <img
-            src={`${item.img}?w=248&fit=crop&auto=format`}
-            srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+            src={item.image}
+            srcSet={item.image}
             alt={item.title}
             loading="lazy"
           />
           <ImageListItemBar
             title={item.title}
-            subtitle={item.points}
+            subtitle={item.description}
             actionIcon={
               <IconButton
                 sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
